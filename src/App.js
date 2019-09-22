@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import {Container, Col, Row, Button, Modal} from 'react-bootstrap';
 import './App.css';
+import Modal from "./components/Modal";
+import useModal from './components/useModal';
 
-function App()  {
-  
-  //principal state
-  //
+function App() {
 
   const [arrayMemes, saveMemes] = useState([]);
-  const [topText, saveTopText] = useState('');
-  const [bottomText, saveBottomText] = useState('');
-
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  console.log("handleshow" , setShow);
+  const {isShowing, toggle} = useModal();
+  const [elem, getElem] = useState();
 
   useEffect( () => {
     
@@ -31,43 +22,34 @@ function App()  {
     });
   }, []);
 
-    if(arrayMemes === "") return
+  
+  if(arrayMemes === "") return
 
-    return (
-      <Container>
-          <Row>    
-            
-            {arrayMemes.map( index => ( 
-              <div className="entrada">
-                <img onClick={handleShow}
-                  key = {index.id}         
-                  src = {index.url}
-                  alt = {index.name}
-                />
-              </div>
-              
-            ))}    
-          </Row>
+  return (
+ 
+    <div className="contenedor">
 
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>Hola</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>sjfioasjfiojasfiojsafiojas</Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                  Download
-                </Button>
-              </Modal.Footer>
-            </Modal>      
-            
-      </Container>    
-    );
+        <div className="blog">
+            {arrayMemes.map( elem => ( 
+                <div className="entrada">
+                  <img 
+                    key = {elem.id}         
+                    src = {elem.url}
+                    alt = {elem.name}
+                    onClick={() => {toggle(); getElem(elem);}}
+                  />
+                </div>    
+            ))}  
+        </div>
+
+          <button className="button-default" onClick={toggle}>Show Modal</button>
+          <Modal
+            isShowing={isShowing}
+            hide={toggle}
+            elem = {elem}
+          />
+    </div>
+  );
 }
-
-
 
 export default App;
