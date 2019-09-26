@@ -42,7 +42,6 @@ function App() {
             ))}  
         </div>
 
-          <button className="button-default" onClick={toggle}>Show Modal</button>
           <Modal
             isShowing={isShowing}
             hide={toggle}
